@@ -1,0 +1,54 @@
+.container {
+	margin: 0 auto;
+	max-width: 500px;
+	margin-top: 100px;
+}
+
+.presentValue {
+	display: flex;
+	margin: 0 auto;
+	margin-left: 10px;
+	font-size: 60px;
+	justify-content: end;
+	align-items: end;
+	width: 460px;
+	height: 100px;
+	background-color: rgba(255, 255, 255, 0.74);
+	border-radius: 5px;
+}
+
+.wrapper {
+	display: grid;
+
+	padding: 10px 10px;
+	grid-template-columns: 3fr 1fr;
+}
+
+.number {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(4, 1fr);
+	gap: 10px;
+}
+
+.number > :last-child {
+	grid-column: 2;
+}
+
+.operations {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: repeat(4, 1fr);
+	gap: 10px;
+}
+
+.btn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 40px;
+	width: 100px;
+	height: 100px;
+	background-color: rgba(255, 255, 255, 0.74);
+	border-radius: 5px;
+}

@@ -17,6 +17,10 @@
 	border-radius: 5px;
 }
 
+.presentValueActive {
+	color: red;
+}
+
 .wrapper {
 	display: grid;
 

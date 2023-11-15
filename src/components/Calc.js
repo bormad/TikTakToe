@@ -24,7 +24,9 @@ const operations = [
 export const Calc = () => {
 	const [current, setCurrent] = React.useState('0');
 	const [result, setResult] = React.useState('0');
-	let [operation, setOperation] = React.useState(null);
+	const [operation, setOperation] = React.useState(null);
+	const [clazz, setClazz] = React.useState(false);
+
 	const onClickNumber = value => {
 		if (current.length >= 1 && current[0] === '0') {
 			setCurrent(current.substring(1, current.length));
@@ -32,29 +34,55 @@ export const Calc = () => {
 		setCurrent(prev => prev + value);
 	};
 
+	const calculateExpression = (a, operation, b) => {
+		a = Number(a);
+		b = Number(b);
+		if (operation === '+') {
+			return a + b;
+		} else {
+			return a - b;
+		}
+	};
+
 	const onClickOperation = type => {
-		if (type === 'clear') {
-			setCurrent('0');
-			setResult('0');
-			operation = null;
-		} else if (type === 'minus') {
-			setResult(current);
-			setCurrent('0');
-			setOperation('-');
-		} else if (type === 'plus') {
-			setResult(current);
-			setCurrent('0');
-			setOperation('+');
-		} else if (type === 'res') {
-			setResult(prev => {
-				setCurrent(eval(prev + operation + current));
-			});
+		switch (type) {
+			case 'clear':
+				setClazz(false);
+				setCurrent('0');
+				setResult('0');
+				break;
+			case 'minus':
+				setClazz(false);
+				setResult(current);
+				setCurrent('0');
+				setOperation('-');
+				break;
+			case 'plus':
+				setClazz(false);
+				setResult(current);
+				setCurrent('0');
+				setOperation('+');
+				break;
+			case 'res':
+				setClazz(true);
+				setCurrent(calculateExpression(result, operation, current));
+				break;
+			default:
+				break;
 		}
 	};
 
 	return (
 		<div className={styles.container}>
-			<div className={styles.presentValue}>{current}</div>
+			<div
+				className={
+					clazz
+						? styles.presentValue + ' ' + styles.presentValueActive
+						: styles.presentValue
+				}
+			>
+				{current}
+			</div>
 			<div className={styles.wrapper}>
 				<div className={styles.number}>
 					{number.map(obj => {

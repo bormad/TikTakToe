@@ -1,0 +1,49 @@
+.wrapper {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 1fr);
+	margin: 0 auto;
+	margin-top: 50px;
+	text-align: center;
+	width: 400px;
+	height: 400px;
+	border: 2px solid red;
+}
+
+.close {
+	position: relative;
+	width: 20px;
+	height: 20px;
+}
+
+.close::before,
+.close::after {
+	top: 50%;
+	content: '';
+	position: absolute;
+	width: 100px;
+	height: 2px;
+	background-color: red;
+}
+
+.close::before {
+	transform: rotate(45deg);
+}
+
+.close::after {
+	transform: rotate(-45deg);
+}
+
+.circle {
+	margin: 0 auto;
+	width: 90px;
+	height: 90px;
+	border: 2px solid red;
+	border-radius: 50%;
+}
+
+h1 {
+	margin-top: 30px;
+	color: red;
+	text-align: center;
+}

@@ -1,6 +1,6 @@
 import './App.css';
-import { Calc } from './components/Calc';
+import TikTacToe from './components/ticTacToe/TikTacToe';
 
 export const App = () => {
-	return <Calc />;
+	return <TikTacToe />;
 };

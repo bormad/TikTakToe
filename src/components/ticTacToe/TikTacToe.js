@@ -43,7 +43,7 @@ const TikTacToe = () => {
 				return;
 			}
 			if (boolClose) {
-				setWin('Победи крестик');
+				setWin('Победил крестик');
 				return;
 			}
 		});
@@ -65,6 +65,15 @@ const TikTacToe = () => {
 		}
 	};
 
+	const reset = () => {
+		let newArr = [null, null, null, null, null, null, null, null, null];
+		setArr(newArr);
+		setWin(false);
+		setWinCircle([]);
+		setWinClose([]);
+		setIsCircle(false);
+	};
+
 	React.useEffect(() => {
 		checkWin();
 	}, [winCircle, winClose]);
@@ -82,6 +91,9 @@ const TikTacToe = () => {
 				})}
 			</div>
 			{win ? <h1>{win}</h1> : null}
+			<button onClick={reset} className='reset'>
+				Начать заново
+			</button>
 		</>
 	);
 };

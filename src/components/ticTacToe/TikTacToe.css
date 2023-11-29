@@ -47,3 +47,18 @@ h1 {
 	color: red;
 	text-align: center;
 }
+
+.reset {
+	display: block;
+	margin: 0 auto;
+	margin-top: 20px;
+	background-color: #fff;
+	color: red;
+	width: 150px;
+	height: 50px;
+	border-radius: 5px;
+}
+
+.reset:hover {
+	border-color: #fff;
+}

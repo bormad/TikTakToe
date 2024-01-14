@@ -113,7 +113,7 @@ const TikTacToe = () => {
 
 	React.useEffect(() => {
 		checkWin();
-	}, [winCircle, winClose, forceUpdate]);
+	}, [winCircle, winClose]);
 
 	return (
 		<>

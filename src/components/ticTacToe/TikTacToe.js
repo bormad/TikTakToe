@@ -1,23 +1,53 @@
 import './TikTacToe.css';
 import React from 'react';
+import { createStore } from 'redux';
+
+const initialState = {
+	isCircle: false,
+	arr: [null, null, null, null, null, null, null, null, null],
+	win: false,
+	winCircle: [],
+	winClose: []
+};
+
+const reducer = (state = initialState, action) => {
+	switch (action.type) {
+		case 'SET_IS_CIRCLE':
+			return {
+				...state,
+				isCircle: action.payload
+			};
+		case 'SET_ARR':
+			return {
+				...state,
+				arr: action.payload
+			};
+		case 'SET_WIN':
+			return {
+				...state,
+				win: action.payload
+			};
+		case 'SET_WIN_CIRCLE':
+			return {
+				...state,
+				winCircle: action.payload
+			};
+		case 'SET_WIN_CLOSE':
+			return {
+				...state,
+				winClose: action.payload
+			};
+		default:
+			return state;
+	}
+};
+
+const store = createStore(reducer);
 
 const TikTacToe = () => {
-	const [isCircle, setIsCircle] = React.useState(false);
-	const [arr, setArr] = React.useState([
-		null,
-		null,
-		null,
-		null,
-		null,
-		null,
-		null,
-		null,
-		null
-	]);
-	const [win, setWin] = React.useState(false);
-	const [winCircle, setWinCircle] = React.useState([]);
-	const [winClose, setWinClose] = React.useState([]);
-
+	const [forceUpdate, triggerForceUpdate] = React.useState(0);
+	const { isCircle, arr, win, winCircle, winClose } = store.getState();
+	const dispatch = store.dispatch;
 	const winConditions = [
 		[0, 1, 2],
 		[3, 4, 5],
@@ -30,53 +60,60 @@ const TikTacToe = () => {
 	];
 
 	const checkWin = () => {
-		let bool = arr.includes(null);
-		if (!bool) {
-			setWin('Ничья');
-		}
-		winConditions.forEach(condition => {
-			let boolClose = condition.every(element => winClose.includes(element));
-			let boolCircle = condition.every(element => winCircle.includes(element));
+		winConditions.forEach((condition) => {
+			let boolClose = condition.every((element) => winClose.includes(element));
+			let boolCircle = condition.every((element) =>
+				winCircle.includes(element)
+			);
 
 			if (boolCircle) {
-				setWin('Победил нолик');
+				dispatch({ type: 'SET_WIN', payload: 'Победил нолик' });
 				return;
 			}
 			if (boolClose) {
-				setWin('Победил крестик');
+				dispatch({ type: 'SET_WIN', payload: 'Победил крестик' });
 				return;
 			}
 		});
+
+		let bool = arr.includes(null);
+		if (!bool && !win) {
+			dispatch({ type: 'SET_WIN', payload: 'Ничья' });
+		}
+		triggerForceUpdate(forceUpdate + 1);
 	};
 
-	const onClickBtn = i => {
+	const onClickBtn = (i) => {
 		const newArr = [...arr];
 		if (newArr[i] !== 'circle' && newArr[i] !== 'close') {
 			newArr[i] = isCircle ? 'circle' : 'close';
 			if (newArr[i] === 'close') {
-				setWinClose([...winClose, i]);
-				setArr(newArr);
-				setIsCircle(!isCircle);
+				dispatch({ type: 'SET_WIN_CLOSE', payload: [...winClose, i] });
+				dispatch({ type: 'SET_ARR', payload: newArr });
+				dispatch({ type: 'SET_IS_CIRCLE', payload: !isCircle });
 			} else if (newArr[i] === 'circle') {
-				setWinCircle([...winCircle, i]);
-				setArr(newArr);
-				setIsCircle(!isCircle);
+				dispatch({ type: 'SET_WIN_CIRCLE', payload: [...winCircle, i] });
+				dispatch({ type: 'SET_ARR', payload: newArr });
+				dispatch({ type: 'SET_IS_CIRCLE', payload: !isCircle });
 			}
+			checkWin();
+			triggerForceUpdate(forceUpdate + 1);
 		}
 	};
 
 	const reset = () => {
 		let newArr = [null, null, null, null, null, null, null, null, null];
-		setArr(newArr);
-		setWin(false);
-		setWinCircle([]);
-		setWinClose([]);
-		setIsCircle(false);
+		dispatch({ type: 'SET_ARR', payload: newArr });
+		dispatch({ type: 'SET_WIN', payload: false });
+		dispatch({ type: 'SET_WIN_CIRCLE', payload: [] });
+		dispatch({ type: 'SET_WIN_CLOSE', payload: [] });
+		dispatch({ type: 'SET_IS_CIRCLE', payload: false });
+		triggerForceUpdate(forceUpdate + 1);
 	};
 
 	React.useEffect(() => {
 		checkWin();
-	}, [winCircle, winClose]);
+	}, [winCircle, winClose, forceUpdate]);
 
 	return (
 		<>
